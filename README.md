@@ -23,7 +23,7 @@ This module requires RedHat compatible RPMs to be available.  Possibly the best 
 
 ## Install Redis
 
-### Base FoundationDB install within sane defaults
+### Base Redis install within sane defaults
 ```
 class { '::redis': }
 ```
