@@ -118,7 +118,7 @@ class redis::config (
   if (!is_integer($slowlog_log_slower_than)) { fail('$slowlog_log_slower_than must be an integer') }
   if (!is_integer($slowlog_max_len)) { fail('$slowlog_max_len must be an integer') }
   if (!is_integer($latency_monitor_threshold)) { fail('$latency_monitor_threshold must be an integer') }
-  validate_re($notify_keyspace_events, '[KEg$lshzxeA]+')
+  validate_re($notify_keyspace_events, [ '[KEg$lshzxeA]+', '""' ])
   if (!is_integer($hash_max_zipmap_entries)) { fail('$hash_max_zipmap_entries must be an integer') }
   if (!is_integer($hash_max_zipmap_value)) { fail('$hash_max_zipmap_value must be an integer') }
   if (!is_integer($list_max_ziplist_entries)) { fail('$list_max_ziplist_entries must be an integer') }
