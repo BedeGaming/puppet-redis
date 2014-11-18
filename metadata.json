@@ -1,0 +1,26 @@
+{
+  "name": "bedegaming-redis",
+  "version": "0.0.1",
+  "author": "Rob Rankin",
+  "license": "MIT License",
+  "summary": "A module for managing Redis",
+  "source": "https://github.com/BedeGaming/puppet-redis",
+  "project_page": "https://github.com/BedeGaming/puppet-redis",
+  "issues_url": "https://github.com/BedeGaming/puppet-redis/issues",
+  "tags": ["redis"],
+  "operatingsystem_support": [
+    {
+    "operatingsystem":"RedHat",
+    "operatingsystemrelease":[ "6.0" ]
+    }
+   ],
+  "requirements": [
+    {
+      "name": "puppet",
+      "version_requirement": ">=3.4"
+    }
+  ],
+  "dependencies": [
+  { "name": "puppetlabs/stdlib" }
+   ]
+}
