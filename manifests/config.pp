@@ -90,7 +90,7 @@ class redis::config (
   validate_re($rdbchecksum, [ 'yes', 'no' ] )
   validate_string($dbfilename)
   validate_absolute_path($dir)
-  if (!is_ip_address($slaveof)) and ($is_ip_address != undef) { fail('$slaveof must be an ip address') }
+  validate_string($slaveof)
   validate_string($masterauth)
   validate_re($slave_serve_stale_data, [ 'yes', 'no' ] )
   validate_re($slave_read_only, [ 'yes', 'no' ] )
