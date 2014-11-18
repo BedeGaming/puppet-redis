@@ -60,7 +60,7 @@ class redis::params {
   $slowlog_log_slower_than = '10000'
   $slowlog_max_len = '128'
   $latency_monitor_threshold = '0'
-  $notify_keyspace_events = ''
+  $notify_keyspace_events = '""'
   $hash_max_zipmap_entries = '512'
   $hash_max_zipmap_value = '64'
   $list_max_ziplist_entries = '512'
