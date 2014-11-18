@@ -70,9 +70,9 @@ class redis::params {
   $zset_max_ziplist_value = '64'
   $hll_sparse_max_bytes = '3000'
   $activerehashing = 'yes'
-  $client_output_buffer_limit_normal = 'normal 0 0 0'
-  $client_output_buffer_limit_slave = 'slave 256mb 64mb 60'
-  $client_output_buffer_limit_pubsub = 'pubsub 32mb 8mb 60'
+  $client_output_buffer_limit_normal = '0 0 0'
+  $client_output_buffer_limit_slave = '256mb 64mb 60'
+  $client_output_buffer_limit_pubsub = '32mb 8mb 60'
   $hz = '10'
   $aof_rewrite_incremental_fsync = 'yes'
 
