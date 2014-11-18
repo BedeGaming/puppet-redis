@@ -33,14 +33,14 @@ class { '::redis': }
 ```
 
 ### Redis Master / Slave Setup with 2 nodes
-Node 1
+Master Node
 ```
 class { '::redis':
   requirepass => 'randompass'
 }
 ```
 
-Node 2
+Slave Node
 ```
 class { '::redis':
   slaveof    => '<masterip> <masterport>'
