@@ -104,7 +104,7 @@ class redis::config (
   if (!is_integer($min_slaves_max_lag)) { fail('$min_slaves_max_lag must be an integer') }
   validate_string($requirepass)
   if (!is_integer($maxclients)) { fail('$maxclients must be an integer') }
-  if (!is_integer($maxmemory)) { fail('$maxmemory must be an integer describing memory in bytes') }
+  if (!is_integer($maxmemory)) and ($maxmemory != undef) { fail('$maxmemory must be an integer describing memory in bytes') }
   validate_re($maxmemory_policy, ['volatile-lru','allkeys-lru','volatile-random','allkeys-random','volatile-ttl','noeviction'])
   if (!is_integer($maxmemory_samples)) { fail('$maxmemory_samples must be an integer') }
   validate_re($appendonly, [ 'yes', 'no' ] )
