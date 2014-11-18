@@ -30,4 +30,4 @@ class { '::redis': }
 
 ### Configuration options
 
-All redis config file options are available in module to be overridden as needed.  See the params.pp class for a full list.
+All redis config file options are available in the module to be overridden as needed.  See the params.pp class for a full list.
