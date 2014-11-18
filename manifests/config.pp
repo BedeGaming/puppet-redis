@@ -97,7 +97,7 @@ class redis::config (
   if (!is_integer($repl_ping_slave_period)) { fail('$repl_ping_slave_period must be an integer') }
   if (!is_integer($repl_timeout)) { fail('$repl_timeout must be an integer') }
   validate_re($repl_disable_tcp_nodelay, [ 'yes', 'no' ] )
-  valiadte_string($repl_backlog_size)
+  validate_string($repl_backlog_size)
   if (!is_integer($repl_backlog_ttl)) { fail('$repl_backlog_ttl must be an integer') }
   if (!is_integer($slave_priority)) { fail('$slave_priority must be an integer') }
   if (!is_integer($min_slaves_to_write)) { fail('$min_slaves_to_write must be an integer') }
