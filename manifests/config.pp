@@ -75,7 +75,7 @@ class redis::config (
   if (!is_integer($port))          { fail('$port must be an integer') }
   if (!is_integer($tcp_backlog))   { fail('$tcp_backlog must be an integer') }
   if (!is_ip_address($bind))       { fail('$bind must be an ip address') }
-  validate_absolute_path($unixsocket)
+  if $unixsocket != undef { validate_absolute_path($unixsocket) }
   if (!is_integer($timeout))       { fail('$timeout must be an integer') }
   if (!is_integer($tcp_keepalive)) { fail('$tcp_keepalive must be an integer') }
   validate_re($loglevel, ['emergency','alert','critical','error','warning','notice','informational','debug','emerg','crit','err','info'])
@@ -90,7 +90,7 @@ class redis::config (
   validate_re($rdbchecksum, [ 'yes', 'no' ] )
   validate_string($dbfilename)
   validate_absolute_path($dir)
-  if (!is_ip_address($slaveof)) { fail('$slaveof must be an ip address') }
+  if (!is_ip_address($slaveof)) and ($is_ip_address != undef) { fail('$slaveof must be an ip address') }
   validate_string($masterauth)
   validate_re($slave_serve_stale_data, [ 'yes', 'no' ] )
   validate_re($slave_read_only, [ 'yes', 'no' ] )
