@@ -13,7 +13,6 @@ class redis::params {
       $sentinel_conf_logrotate = '/etc/logrotate.d/redis-sentinel'
       $sentinel_logfile        = '/var/log/redis/redis-sentinel.log'
       $sentinel_pidfile        = '/var/run/redis/redis.pid'
-      $sentinel_logfile        = '/var/log/redis/redis.log'
     }
   }
 
@@ -90,7 +89,6 @@ class redis::params {
   # Redis Sentinel Paramters
   $sentinel_cluster_name             = undef
   $sentinel_port                     = '26379'
-  $sentinel_logfile                  = '/var/log/redis/sentinel.log'
   $sentinel_working_dir              = '/tmp'
   $sentinel_redis_master             = undef
   $sentinel_redis_port               = undef
