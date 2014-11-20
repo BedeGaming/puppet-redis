@@ -93,7 +93,7 @@ class redis (
 
   contain '::redis::install'
 
-  if $redis_enable {
+  if $server_enable {
     class { '::redis::server':
       require => Class['::redis::install']
     }
