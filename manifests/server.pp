@@ -1,7 +1,11 @@
 class redis::server (
 
+  $service                           = $redis::server_service,
+  $service_ensure                    = $redis::server_service_ensure,
+  $cluster_name                      = $redis::server_cluster_name,
   $conf                              = $redis::server_conf,
   $conf_logrotate                    = $redis::server_conf_logrotate,
+  $pidfile                           = $redis::server_pidfile,
   $logfile                           = $redis::server_logfile,
   $daemonize                         = $redis::server_daemonize,
   $port                              = $redis::server_port,
@@ -65,6 +69,7 @@ class redis::server (
   $client_output_buffer_limit_pubsub = $redis::server_client_output_buffer_limit_pubsub,
   $hz                                = $redis::server_hz,
   $aof_rewrite_incremental_fsync     = $redis::server_aof_rewrite_incremental_fsync,
+
 
 ) {
 
