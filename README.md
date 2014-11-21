@@ -24,6 +24,8 @@ This module requires RedHat compatible RPMs to be available.  Possibly the best 
 * Installation and upgrading of Redis instances
 * Creation of Redis Master/Slave setups
 * Anything you can do with the Redis config file
+* Installation of Redis Sentinel (included with REMI Redis RPMs)
+* Creation of Sentinel instances to manage Redis failover
 
 ## Install Redis
 
@@ -43,12 +45,31 @@ class { '::redis':
 Slave Node
 ```
 class { '::redis':
-  slaveof    => '<masterip> <masterport>'
-  masterauth => 'randompass'
+  slaveof    => '<masterip> <masterport>',
+  masterauth => 'randompass',
+}
+```
+
+### Addition of a Sentinel on nodes
+Master Node
+```
+class { '::redis':
+  requirepass     => 'randompass'
+  sentinel_enable => true,
+}
+```
+
+Slave Node
+```
+class { '::redis':
+  slaveof         => '<masterip> <masterport>',
+  masterauth      => 'randompass',
+  sentinel_enable => true,
 }
 ```
 
 
+
 ### Configuration options
 
-All redis config file options are available in the module to be overridden as needed.  See the params.pp class for a full list.
+All Redis Server and Sentinel config file options are available in the module to be overridden as needed.  See the params.pp class for a full list.
