@@ -2,6 +2,7 @@ class redis::server (
 
   $service                           = $redis::server_service,
   $service_ensure                    = $redis::server_service_ensure,
+  $service_manage                    = $redis::server_service_manage,
   $cluster_name                      = $redis::server_cluster_name,
   $conf                              = $redis::server_conf,
   $conf_logrotate                    = $redis::server_conf_logrotate,
@@ -72,14 +73,17 @@ class redis::server (
 
 
 ) {
-
   class {'::redis::server::config':
     require => Class['::redis::install']
   }
   contain '::redis::server::config'
   contain '::redis::server::service'
 
-  Class ['::redis::server::config'] ~>
-  Class ['::redis::server::service']
-
+  if $service_manage {
+    Class ['::redis::server::config'] ~>
+    Class ['::redis::server::service']
+  } else {
+    Class ['::redis::server::config'] ->
+    Class ['::redis::server::service']
+  }
 }

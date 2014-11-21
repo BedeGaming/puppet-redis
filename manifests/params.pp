@@ -24,6 +24,7 @@ class redis::params {
   # Redis Parameters
   $server_package_ensure                    = 'installed'
   $server_service_ensure                    = 'running'
+  $server_service_manage                    = false
   $server_daemonize                         = 'yes'
   $server_port                              = '6379'
   $server_tcp_backlog                       = '511'
@@ -90,6 +91,7 @@ class redis::params {
   # Redis Sentinel Paramters
   $sentinel_package_ensure           = 'installed'
   $sentinel_service_ensure           = 'running'
+  $sentinel_service_manage           = false
   $sentinel_working_dir              = '/tmp'
   $sentinel_port                     = '26379'
   $sentinel_master_name              = undef
