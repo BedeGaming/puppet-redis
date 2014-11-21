@@ -80,14 +80,16 @@ class redis (
   $sentinel_logfile                 = $redis::params::sentinel_logfile,
   $sentinel_service                 = $redis::params::sentinel_service,
   $sentinel_service_ensure          = $redis::params::sentinel_service_ensure,
-  $sentinel_cluster_name            = $redis::params::sentinel_cluster_name,
-  $sentinel_port                    = $redis::params::sentinel_port,
   $sentinel_working_dir             = $redis::params::sentinel_working_dir,
-  $sentinel_redis_master            = $redis::params::sentinel_redis_master,
-  $sentinel_redis_port              = $redis::params::sentinel_redis_port,
-  $sentinel_quorum                  = $redis::params::sentinel_quorum,
-  $sentinel_down_after_milliseconds = $redis::params::sentinel_down_after_milliseconds,
+  $sentinel_port                    = $redis::params::sentinel_port,
+  $sentinel_master_name             = $redis::params::sentinel_master_name,
+  $sentinel_master_ip               = $redis::params::sentinel_master_ip,
+  $sentinel_master_port             = $redis::params::sentinel_master_port,
   $sentinel_auth_pass               = $redis::params::sentinel_auth_pass,
+  $sentinel_down_after_milliseconds = $redis::params::sentinel_down_after_milliseconds,
+  $sentinel_quorum                  = $redis::params::sentinel_quorum,
+  $sentinel_parallel_syncs          = $redis::params::sentinel_parallel_syncs,
+  $sentinel_failover_timeout        = $redis::params::sentinel_failover_timeout,
 
 ) inherits redis::params {
 

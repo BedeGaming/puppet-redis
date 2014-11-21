@@ -1,5 +1,9 @@
 class redis::params {
 
+  # Redis and Redis Sentinel Enabling
+  $server_enable   = true
+  $sentinel_enable = false
+
   case $::osfamily {
     'redhat': {
       $package                 = 'redis'
@@ -16,9 +20,6 @@ class redis::params {
     }
   }
 
-  # Redis and Redis Sentinel Enabling
-  $server_enable   = true
-  $sentinel_enable = false
 
   # Redis Parameters
   $server_package_ensure                    = 'installed'
@@ -87,14 +88,18 @@ class redis::params {
   $server_aof_rewrite_incremental_fsync     = 'yes'
 
   # Redis Sentinel Paramters
-  $sentinel_cluster_name             = undef
-  $sentinel_port                     = '26379'
+  $sentinel_package_ensure           = 'installed'
+  $sentinel_service_ensure           = 'running'
   $sentinel_working_dir              = '/tmp'
-  $sentinel_redis_master             = undef
-  $sentinel_redis_port               = undef
-  $sentinel_quorum                   = undef
-  $sentinel_down_after_milliseconds  = '30000'
+  $sentinel_port                     = '26379'
+  $sentinel_master_name              = undef
+  $sentinel_master_ip                = undef
+  $sentinel_master_port              = undef
   $sentinel_auth_pass                = undef
+  $sentinel_down_after_milliseconds  = '30000'
+  $sentinel_quorum                   = undef
+  $sentinel_parallel_syncs           = undef
+  $sentinel_failover_timeout         = undef
 
 
 }
