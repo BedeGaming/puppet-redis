@@ -1,4 +1,5 @@
 class redis::sentinel::config (
+  $user                    = $redis::sentinel::user,
   $conf                    = $redis::sentinel::conf,
   $conf_logrotate          = $redis::sentinel::conf_logrotate,
   $logfile                 = $redis::sentinel::logfile,
@@ -19,7 +20,7 @@ class redis::sentinel::config (
   file { $conf:
     path    => $conf,
     content => template('redis/redis-sentinel.conf.erb'),
-    owner   => root,
+    owner   => $user,
     group   => root,
     mode    => '0644',
   }

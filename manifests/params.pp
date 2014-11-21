@@ -17,6 +17,8 @@ class redis::params {
       $sentinel_conf_logrotate = '/etc/logrotate.d/redis-sentinel'
       $sentinel_logfile        = '/var/log/redis/redis-sentinel.log'
       $sentinel_pidfile        = '/var/run/redis/redis.pid'
+      $sentinel_user           = 'redis'
+      $sentinel_group          = 'redis'
     }
   }
 

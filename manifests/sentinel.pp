@@ -1,4 +1,5 @@
 class redis::sentinel (
+  $user                    = $redis::sentinel_user,
   $enable                  = $redis::sentinel_enable,
   $service                 = $redis::sentinel_service,
   $service_ensure          = $redis::sentinel_service_ensure,

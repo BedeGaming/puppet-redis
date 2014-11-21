@@ -75,6 +75,7 @@ class redis (
   $server_hz                                = $redis::params::server_hz,
   $server_aof_rewrite_incremental_fsync     = $redis::params::server_aof_rewrite_incremental_fsync,
 
+  $sentinel_user                    = $redis::params::sentinel_user,
   $sentinel_conf                    = $redis::params::sentinel_conf,
   $sentinel_conf_logrotate          = $redis::params::sentinel_conf_logrotate,
   $sentinel_pidfile                 = $redis::params::sentinel_pidfile,
