@@ -26,7 +26,7 @@ class redis::params {
   # Redis Parameters
   $server_package_ensure                    = 'installed'
   $server_service_ensure                    = 'running'
-  $server_service_manage                    = false
+  $server_service_manage                    = true
   $server_daemonize                         = 'yes'
   $server_port                              = '6379'
   $server_tcp_backlog                       = '511'
