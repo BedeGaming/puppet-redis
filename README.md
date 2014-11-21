@@ -21,11 +21,9 @@ This module requires RedHat compatible RPMs to be available.  Possibly the best 
 
 ## Module Uses
 
-* Installation and upgrading of Redis instances
+* Installation and management of Redis instances
 * Creation of Redis Master/Slave setups
-* Anything you can do with the Redis config file
-* Installation of Redis Sentinel (included with REMI Redis RPMs)
-* Creation of Sentinel instances to manage Redis failover
+* Installation and management of Sentinel instances (manages Redis master/slave failvoer)
 
 ## Install Redis
 
@@ -54,17 +52,25 @@ class { '::redis':
 Master Node
 ```
 class { '::redis':
-  requirepass     => 'randompass'
-  sentinel_enable => true,
+  requirepass          => 'randompass'
+  sentinel_enable      => true,
+  sentinel_master_name => '<mastername>,
+  sentinel_master_ip   => '<masterip>',
+  sentinel_master_port => '<masterport>',
+  sentinel_quorum      => '<quorum>',
 }
 ```
 
 Slave Node
 ```
 class { '::redis':
-  slaveof         => '<masterip> <masterport>',
-  masterauth      => 'randompass',
-  sentinel_enable => true,
+  slaveof              => '<masterip> <masterport>',
+  masterauth           => 'randompass',
+  sentinel_enable      => true,
+  sentinel_master_name => '<mastername>,
+  sentinel_master_ip   => '<masterip>',
+  sentinel_master_port => '<masterport>'
+  sentinel_quorum      => '<quorum>',
 }
 ```
 
