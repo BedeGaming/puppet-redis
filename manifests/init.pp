@@ -41,10 +41,7 @@ class redis (
   contain '::redis::install'
 
   if $server_enable {
-    class { '::redis::server':
-      require => Class['::redis::install']
-    }
-    contain '::redis::server'
+    create_resources('redis::server::instance',$server_instances)
   }
 
   if $sentinel_enable {
