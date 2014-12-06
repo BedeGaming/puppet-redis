@@ -17,16 +17,16 @@ class redis::sentinel::config (
   $failover_timeout        = $redis::sentinel::failover_timeout,
 ) {
 
-  file { $conf:
-    path    => $conf,
+  file { "${name}_${conf}":
+    path    => "${conf_path}/${conf}",
     content => template('redis/redis-sentinel.conf.erb'),
     owner   => $user,
     group   => root,
     mode    => '0644',
   }
 
-  file { $conf_logrotate:
-    path    => $conf_logrotate,
+  file { "${name}_${conf_logrotate}":
+    path    => "${conf_logrotate_path}/${conf_logrotate}",
     content => template('redis/redis-sentinel.logrotate.erb'),
     owner   => root,
     group   => root,
