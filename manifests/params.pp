@@ -12,6 +12,7 @@ class redis::params {
     'redhat': {
       $package                      = 'redis'
       $server_service               = 'redis'
+      $server_service_path          = '/etc/init.d'
       $server_conf                  = 'redis.conf'
       $server_conf_path             = '/etc'
       $server_conf_logrotate        = 'redis'

@@ -1,5 +1,10 @@
 define redis::server::instance (
 
+  $service_ensure                    = $redis::params::server_service_ensure,
+  $service_enable                    = $redis::params::server_enable,
+  $service                           = $redis::params::server_service,
+  $service_path                      = $redis::params::server_service_path,
+
   $conf                              = $redis::params::server_conf,
   $conf_path                         = $redis::params::server_conf_path,
   $conf_logrotate                    = $redis::params::server_conf_logrotate,
@@ -142,19 +147,35 @@ define redis::server::instance (
   validate_re($aof_rewrite_incremental_fsync, [ 'yes', 'no' ] )
 
   file { "${name}_${conf}":
-    path    => "${conf_path}/${name}-${conf}",
+    path    => "${conf_path}/${name}_${conf}",
     content => template('redis/redis.conf.erb'),
     owner   => root,
     group   => root,
     mode    => '0644',
   }
 
-  file { "${name}_${conf_logrotate}":
-    path    => "${conf_logrotate_path}/${name}-${conf_logrotate}",
+  file { "${name}_${conf_logrotate}_logrotate":
+    path    => "${conf_logrotate_path}/${name}_${conf_logrotate}",
     content => template('redis/redis.logrotate.erb'),
     owner   => root,
     group   => root,
     mode    => '0644',
+  }
+
+  file { "${name}_${service}_init":
+    path    => "${service_path}/${name}_${service}",
+    content => template('redis/redis-init.erb'),
+    owner   => root,
+    group   => root,
+    mode    => '0755',
+  }
+
+  service { "${name}_${service}":
+    ensure    => $service_ensure,
+    name      => "${name}_${service}",
+    enable    => $service_enable,
+    require   => [ File["${name}_${service}_init"], File["${name}_${conf}"], File["${name}_${conf_logrotate}_logrotate"] ],
+    subscribe => File["${name}_${conf}"],
   }
 
 }
