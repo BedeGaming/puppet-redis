@@ -14,6 +14,7 @@ define redis::sentinel::instance (
   $logfile_path            = $redis::params::sentinel_logfile_path,
 
   $master                  = $name,
+  $use_default_master     = true,
 
   $user                    = 'redis',
   $group                   = 'redis',
@@ -30,17 +31,18 @@ define redis::sentinel::instance (
     owner  => $user,
     group  => $group,
     mode   => '0644',
-    notify => Class['::redis::sentinel::service'],
+    #    notify => Class['::redis::sentinel::service'],
   }
 
-  ::redis::sentinel::master { "${name}-default":
-    master      => $name,
-    master_name => $name,
-    master_ip   => $::ipaddress,
-    master_port => '6379',
-    instance    => $name,
+  if $use_default_master {
+    ::redis::sentinel::master { "${name}-default":
+      master      => $name,
+      master_name => $name,
+      master_ip   => $::ipaddress,
+      master_port => '6379',
+      instance    => $name,
+    }
   }
-
 
   concat::fragment { "${name}_${conf}_header":
     ensure  => present,
@@ -55,7 +57,6 @@ define redis::sentinel::instance (
     content => template('redis/redis-sentinel_footer.conf.erb'),
     order   => '699',
   }
-
 
   file { "${name}_${conf_logrotate}":
     path    => "${conf_logrotate_path}/${name}_${conf_logrotate}",
