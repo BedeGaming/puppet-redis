@@ -10,7 +10,7 @@ port <%= @port %>
 # Redis to log on the standard output. Note that if you use standard
 # output for logging but daemonize, logs will be sent to /dev/null
 <%- if @logfile -%>
-logfile <%= @logfile %>
+        logfile <%= @logfile_path %>/<%= @logfile %>
 <%- end -%>
 # sentinel announce-ip <ip>
 # sentinel announce-port <port>
