@@ -5,6 +5,7 @@ class redis (
   $sentinel_enable                  = $redis::params::sentinel_enable,
   $server_instances                 = {},
   $sentinel_instances               = {},
+  $sentinel_masters                 = {},
 
   $server_package                   = $redis::params::server_package,
   $server_service                   = $redis::params::server_service,
@@ -47,6 +48,7 @@ class redis (
 
   if $sentinel_enable {
     create_resources('redis::sentinel::instance',$sentinel_instances)
+    create_resources('redis::sentinel::master',$sentinel_masters)
   }
 
 }
