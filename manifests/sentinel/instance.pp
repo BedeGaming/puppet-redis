@@ -68,7 +68,7 @@ define redis::sentinel::instance (
 
   file { "${name}_${service}_init":
     path    => "${service_path}/${name}_${service}",
-    content => template('redis/redis-init.erb'),
+    content => template('redis/redis-sentinel-init.erb'),
     owner   => root,
     group   => root,
     mode    => '0755',
