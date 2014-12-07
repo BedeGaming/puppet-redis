@@ -43,8 +43,8 @@ class redis::params {
   $sentinel_service_manage           = false
   $sentinel_working_dir              = '/tmp'
   $sentinel_port                     = '26379'
-  $sentinel_master_name              = $::hostname
-  $sentinel_master_ip                = $::ipaddress
+  $sentinel_master_name              = undef
+  $sentinel_master_ip                = undef
   $sentinel_master_port              = '6379'
   $sentinel_auth_pass                = undef
   $sentinel_down_after_milliseconds  = '30000'
