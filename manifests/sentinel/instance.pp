@@ -25,7 +25,7 @@ define redis::sentinel::instance (
 
 ) {
 
-  $config = "${conf_path}/${conf}"
+  $config = "${conf_path}/${name}_${conf}"
 
   concat { $config:
     owner  => $user,
