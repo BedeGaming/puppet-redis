@@ -42,11 +42,11 @@ class redis (
 
   contain '::redis::install'
 
-  if $server_enable {
+  if str2bool($server_enable) {
     create_resources('redis::server::instance',$server_instances)
   }
 
-  if $sentinel_enable {
+  if str2bool($sentinel_enable) {
     create_resources('redis::sentinel::instance',$sentinel_instances)
     create_resources('redis::sentinel::master',$sentinel_masters)
   }
