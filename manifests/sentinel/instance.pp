@@ -66,5 +66,20 @@ define redis::sentinel::instance (
     mode    => '0644',
   }
 
+  file { "${name}_${service}_init":
+    path    => "${service_path}/${name}_${service}",
+    content => template('redis/redis-init.erb'),
+    owner   => root,
+    group   => root,
+    mode    => '0755',
+  }
+
+  service { "${name}_${service}":
+    ensure    => $service_ensure,
+    name      => "${name}_${service}",
+    enable    => $service_enable,
+    require   => [ File["${name}_${service}_init"], File["${config}"], File["${name}_${conf_logrotate}_logrotate"] ],
+    subscribe => File["${config}"],
+  }
 
 }
