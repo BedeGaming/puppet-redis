@@ -8,8 +8,8 @@
 # Source function library.
 . /etc/rc.d/init.d/functions
 
-name="<%= @name %>-sentinel-redis-server"
-exec="/usr/bin/redis-server"
+name="<%= @name %>-redis-sentinel"
+exec="/usr/bin/redis-sentinel"
 shut="/usr/bin/redis-shutdown"
 pidfile="<%= @pidfile_path %>/<%= @name %>_<%= @pidfile %>"
 REDIS_CONFIG="<%= @conf_path %>/<%= @name %>_<%= @conf %>"
