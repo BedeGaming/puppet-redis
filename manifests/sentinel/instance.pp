@@ -14,7 +14,7 @@ define redis::sentinel::instance (
   $logfile_path            = $redis::params::sentinel_logfile_path,
 
   $master                  = $name,
-  $use_default_master     = true,
+  $use_default_master      = false,
 
   $user                    = 'redis',
   $group                   = 'redis',
