@@ -58,7 +58,7 @@ define redis::sentinel::instance (
     order   => '699',
   }
 
-  file { "${name}_${conf_logrotate}":
+  file { "${name}_${conf_logrotate}_logrotate":
     path    => "${conf_logrotate_path}/${name}_${conf_logrotate}",
     content => template('redis/redis-sentinel.logrotate.erb'),
     owner   => root,
