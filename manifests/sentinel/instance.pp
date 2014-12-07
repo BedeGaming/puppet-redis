@@ -38,6 +38,7 @@ define redis::sentinel::instance (
     master_name => $name,
     master_ip   => $::ipaddress,
     master_port => '6379',
+    instance    => $name,
   }
 
 
