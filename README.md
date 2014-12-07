@@ -25,6 +25,7 @@ PRs to extend the module for other Redis versions, distributions or other Redis 
 ## Module Uses
 
 * Installation and management of Redis instances
+* Manage multiple Redis instances on a single server
 * Creation of Redis Master/Slave setups
 * Installation and management of Sentinel instances (manages Redis master/slave failvoer)
 
