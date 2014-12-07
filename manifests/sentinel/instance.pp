@@ -21,32 +21,48 @@ define redis::sentinel::instance (
   $announce_port           = undef,
   $working_dir             = '/tmp',
   $port                    = '26379',
-  $master_name             = $::hostname,
-  $master_ip               = $::ipaddress,
-  $master_port             = '6379',
-  $auth_pass               = undef,
-  $down_after_milliseconds = '30000',
-  $quorum                  = '1',
-  $parallel_syncs          = undef,
-  $failover_timeout        = undef,
 
 ) {
 
+  $config = "${conf_path}/${conf}"
+
+  concat { $config:
+    owner  => $user,
+    group  => $group,
+    mode   => '0644',
+    notify => Class['::redis::sentinel::service'],
+  }
+
+  ::redis::sentinel::master { "${name}-default":
+    master      => $name,
+    master_name => $name,
+    master_ip   => $::ipaddress,
+    master_port => '6379',
+  }
+
+
+  concat::fragment { "${name}_${conf}_header":
+    ensure  => present,
+    target  => $config,
+    content => template('redis/redis-sentinel_header.conf.erb'),
+    order   => '001',
+  }
+
+  concat::fragment { "${name}_${conf}_footer":
+    ensure  => present,
+    target  => $config,
+    content => template('redis/redis-sentinel_footer.conf.erb'),
+    order   => '699',
+  }
+
+
   file { "${name}_${conf_logrotate}":
-    path    => "${conf_logrotate_path}/${conf_logrotate}",
+    path    => "${conf_logrotate_path}/${name}_${conf_logrotate}",
     content => template('redis/redis-sentinel.logrotate.erb'),
     owner   => root,
     group   => root,
     mode    => '0644',
-    ensure  => present,
   }
 
-  file { "${name}_${conf}":
-    path    => "${conf_path}/${conf}",
-    content => template('redis/redis-sentinel.conf.erb'),
-    owner   => $user,
-    group   => root,
-    mode    => '0644',
-  }
 
 }
