@@ -39,42 +39,33 @@ class { '::redis': }
 ### Redis Master / Slave Setup with 2 nodes
 Master Node
 ```
-class { '::redis':
+redis::server::instance { 'instance_one':
   requirepass => 'randompass'
 }
 ```
 
 Slave Node
 ```
-class { '::redis':
+redis::server::instance { 'instance_one_slave':
   slaveof    => '<masterip> <masterport>',
   masterauth => 'randompass',
 }
 ```
 
-### Addition of a Sentinel on nodes
-Master Node
+### Addition of a Sentinel on the nodes
 ```
-class { '::redis':
-  requirepass          => 'randompass'
-  sentinel_enable      => true,
-  sentinel_master_name => '<mastername>,
-  sentinel_master_ip   => '<masterip>',
-  sentinel_master_port => '<masterport>',
-  sentinel_quorum      => '<quorum>',
+redis::sentinel::instance { 'sentinel_one':
+  port => '26379',
 }
 ```
 
-Slave Node
 ```
-class { '::redis':
-  slaveof              => '<masterip> <masterport>',
-  masterauth           => 'randompass',
-  sentinel_enable      => true,
-  sentinel_master_name => '<mastername>,
-  sentinel_master_ip   => '<masterip>',
-  sentinel_master_port => '<masterport>'
-  sentinel_quorum      => '<quorum>',
+redis::sentinel::masters { 'redis_instance_one':
+  master_ip     => 'ip address',
+  master_port   => 'port',
+  authpass      => 'randompass',
+  quorum        => 2,
+  instance      => 'sentinel_one'
 }
 ```
 
