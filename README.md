@@ -73,4 +73,4 @@ redis::sentinel::masters { 'redis_instance_one':
 
 ### Configuration options
 
-All Redis Server and Sentinel config file options are available in the module to be overridden as needed.  See the params.pp class for a full list.
+All Redis Server and Sentinel config file options are available in the module to be overridden as needed.  See the params.pp class, and the defined types for Server and Sentinel for a full list.
