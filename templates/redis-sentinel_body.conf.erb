@@ -1,0 +1,25 @@
+
+# Sentinel configs for instance <%= @master %>
+
+<%- if @master and @master_ip and @master_port and @quorum -%>
+sentinel monitor <%= @master %> <%= @master_ip %> <%= @master_port %> <%= @quorum %>
+<%- end -%>
+
+<%- if @master_name and @auth_pass -%>
+sentinel auth-pass <%= @master_name %> <%= @auth_pass %>
+<%- end -%>
+
+<%- if @master_name and @down_after_milliseconds -%>
+sentinel down-after-milliseconds <%= @master_name %> <%= @down_after_milliseconds %>
+<%- end -%>
+
+<%- if @master_name and @parallel_syncs -%>
+sentinel parallel-syncs <%= @master_name %> <%= @parallel_syncs %>
+<%- end -%>
+
+<%- if @master_name and @failover_timeout -%>
+sentinel failover-timeout <%= @master_name %> <%= @failover_timeout %>
+<%- end -%>
+
+
+
