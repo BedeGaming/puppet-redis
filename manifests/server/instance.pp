@@ -3,7 +3,10 @@ define redis::server::instance (
   $service_ensure                    = $redis::params::server_service_ensure,
   $service_enable                    = $redis::params::server_enable,
   $service                           = $redis::params::server_service,
-  $service_path                      = $redis::params::server_service_path,
+  $service_path                      = $redis::params::service_path,
+  $server_init_template              = $redis::params::server_init_template,
+  $service_provider                  = $redis::params::service_provider,
+  $service_name                      = $redis::params::server_service_name,
 
   $conf                              = $redis::params::server_conf,
   $conf_path                         = $redis::params::server_conf_path,
@@ -146,6 +149,7 @@ define redis::server::instance (
   if (!is_integer($hz)) { fail('$hz must be an integer') }
   validate_re($aof_rewrite_incremental_fsync, [ 'yes', 'no' ] )
 
+
   file { "${name}_${conf}":
     path    => "${conf_path}/${name}_${conf}",
     content => template('redis/redis.conf.erb'),
@@ -163,16 +167,23 @@ define redis::server::instance (
   }
 
   file { "${name}_${service}_init":
-    path    => "${service_path}/${name}_${service}",
-    content => template('redis/redis-init.erb'),
+    path    => "${service_path}/${service_name}",
+    content => template("redis/${server_init_template}"),
     owner   => root,
     group   => root,
     mode    => '0755',
   }
 
-  service { "${name}_${service}":
+  if ($service_provider == 'systemd') {
+    exec { 'reload systemd services':
+      command => 'systemctl daemon-reload',
+      path    => '/usr/bin:/usr/sbin:/bin:/usr/local/bin',
+    }
+  }
+
+  service { $service_name :
     ensure    => $service_ensure,
-    name      => "${name}_${service}",
+    name      => $service_name,
     enable    => $service_enable,
     require   => [ File["${name}_${service}_init"], File["${name}_${conf}"], File["${name}_${conf_logrotate}_logrotate"] ],
     subscribe => File["${name}_${conf}"],
