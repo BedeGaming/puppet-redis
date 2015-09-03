@@ -1,27 +1,31 @@
 define redis::sentinel::instance (
 
-  $service_ensure          = $redis::params::sentinel_service_ensure,
-  $service_enable          = $redis::params::sentinel_enable,
-  $service                 = $redis::params::sentinel_service,
-  $service_path            = $redis::params::sentinel_service_path,
-  $conf                    = $redis::params::sentinel_conf,
-  $conf_path               = $redis::params::sentinel_conf_path,
-  $conf_logrotate          = $redis::params::sentinel_conf_logrotate,
-  $conf_logrotate_path     = $redis::params::sentinel_conf_logrotate_path,
-  $pidfile                 = $redis::params::sentinel_pidfile,
-  $pidfile_path            = $redis::params::sentinel_pidfile_path,
-  $logfile                 = $redis::params::sentinel_logfile,
-  $logfile_path            = $redis::params::sentinel_logfile_path,
+  $service_ensure            = $redis::params::sentinel_service_ensure,
+  $service_enable            = $redis::params::sentinel_enable,
+  $service                   = $redis::params::sentinel_service,
+  $service_path              = $redis::params::service_path,
+  $sentinel_init_template    = $redis::params::sentinel_init_template,
+  $service_provider          = $redis::params::service_provider,
+  $service_name              = $redis::params::sentinel_service_name,
 
-  $master                  = $name,
-  $use_default_master      = false,
+  $conf                      = $redis::params::sentinel_conf,
+  $conf_path                 = $redis::params::sentinel_conf_path,
+  $conf_logrotate            = $redis::params::sentinel_conf_logrotate,
+  $conf_logrotate_path       = $redis::params::sentinel_conf_logrotate_path,
+  $pidfile                   = $redis::params::sentinel_pidfile,
+  $pidfile_path              = $redis::params::sentinel_pidfile_path,
+  $logfile                   = $redis::params::sentinel_logfile,
+  $logfile_path              = $redis::params::sentinel_logfile_path,
 
-  $user                    = 'redis',
-  $group                   = 'redis',
-  $accounce_ip             = undef,
-  $announce_port           = undef,
-  $working_dir             = '/tmp',
-  $port                    = '26379',
+  $master                    = $name,
+  $use_default_master        = false,
+
+  $user                      = 'redis',
+  $group                     = 'redis',
+  $accounce_ip               = undef,
+  $announce_port             = undef,
+  $working_dir               = '/tmp',
+  $port                      = '26379',
 
 ) {
 
@@ -67,16 +71,23 @@ define redis::sentinel::instance (
   }
 
   file { "${name}_${service}_init":
-    path    => "${service_path}/${name}_${service}",
-    content => template('redis/redis-sentinel-init.erb'),
+    path    => "${service_path}/${service_name}",
+    content => template("redis/${sentinel_init_template}"),
     owner   => root,
     group   => root,
     mode    => '0755',
   }
 
-  service { "${name}_${service}":
+  if ($service_provider == 'systemd') {
+    exec { 'reload systemd services':
+      command => 'systemctl daemon-reload',
+      path    => '/usr/bin:/usr/sbin:/bin:/usr/local/bin',
+    }
+  }
+
+  service { $service_name :
     ensure    => $service_ensure,
-    name      => "${name}_${service}",
+    name      => $service_name,
     enable    => $service_enable,
     require   => [ File["${name}_${service}_init"], File["${config}"], File["${name}_${conf_logrotate}_logrotate"] ],
     subscribe => File["${config}"],

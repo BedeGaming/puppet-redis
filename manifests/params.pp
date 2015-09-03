@@ -12,7 +12,6 @@ class redis::params {
     'redhat': {
       $package                      = 'redis'
       $server_service               = 'redis'
-      $server_service_path          = '/etc/init.d'
       $server_conf                  = 'redis.conf'
       $server_conf_path             = '/etc'
       $server_conf_logrotate        = 'redis'
@@ -22,7 +21,6 @@ class redis::params {
       $server_logfile               = 'redis.log'
       $server_logfile_path          = '/var/log/redis'
       $sentinel_service             = 'redis-sentinel'
-      $sentinel_service_path        = '/etc/init.d'
       $sentinel_conf                = 'redis-sentinel.conf'
       $sentinel_conf_path           = '/etc'
       $sentinel_conf_logrotate      = 'redis-sentinel'
@@ -34,8 +32,24 @@ class redis::params {
       $sentinel_user                = 'redis'
       $sentinel_group               = 'redis'
     }
-  }
 
+    # Check Release number
+    if versioncmp($::operatingsystemmajrelease, '7') >= 0 {
+        $service_provider         = 'systemd'
+        $server_init_template     = 'redis-systemd.erb'
+        $sentinel_init_template   = 'redis-sentinel-systemd.erb'
+        $service_path             = '/etc/systemd/system/'
+        $server_service_name      = "${name}_${server_service}.service"
+        $sentinel_service_name    = "${name}_${sentinel_service}.service"
+      } else {
+        $service_provider         = 'init'
+        $server_init_template     = 'redis-init.erb'
+        $sentinel_init_template   = 'redis-sentinel-init.erb'
+        $service_path             = '/etc/init.d'
+        $server_service_name      = "${name}_${server_service}"
+        $sentinel_service_name    = "${name}_${sentinel_service}"
+        }
+  }
 
   # Redis Sentinel Paramters
   $sentinel_package_ensure           = 'installed'

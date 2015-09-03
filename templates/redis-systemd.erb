@@ -1,0 +1,13 @@
+[Unit]
+Description=<%= @name %>-redis-server persistent key-value database
+After=network.target
+
+[Service]
+
+ExecStart=/usr/bin/redis-server <%= @conf_path %>/<%= @name %>_<%= @conf %> --daemonize yes --pidfile <%= @pidfile_path %>/<%= @name %>_<%= @pidfile %>
+ExecStop=/usr/bin/redis-shutdown
+User=redis
+Group=redis
+
+[Install]
+WantedBy=multi-user.target
