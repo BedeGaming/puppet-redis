@@ -18,6 +18,8 @@ class redis (
   $server_package_ensure            = $redis::params::server_package_ensure,
   $server_service_ensure            = $redis::params::server_service_ensure,
   $server_service_manage            = $redis::params::server_service_manage,
+  $slowlog_log_slower_than          = $redis::params::slowlog_log_slower_than,
+  $slowlog_max_len                  = $redis::params::slowlog_max_len,
 
   $sentinel_user                    = $redis::params::sentinel_user,
   $sentinel_conf                    = $redis::params::sentinel_conf,

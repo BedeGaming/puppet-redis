@@ -4,9 +4,12 @@ class redis::params {
   $server_enable   = true
   $sentinel_enable = false
 
-  $server_package_ensure = 'installed'
-  $server_service_ensure = 'running'
-  $server_service_manage = true
+  $server_package_ensure   = 'installed'
+  $server_service_ensure   = 'running'
+  $server_service_manage   = true
+
+  $slowlog_log_slower_than = '10000'
+  $slowlog_max_len         = '128'
 
   case $::osfamily {
     'redhat': {
