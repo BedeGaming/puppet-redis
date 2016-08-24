@@ -2,7 +2,7 @@ class redis::params {
 
   # Redis and Redis Sentinel Enabling
   $server_enable   = true
-  $sentinel_enable = false
+  $sentinel_enable = true
 
   $server_package_ensure = 'installed'
   $server_service_ensure = 'running'
