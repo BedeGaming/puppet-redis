@@ -78,8 +78,8 @@ define redis::sentinel::instance (
     ensure    => $service_ensure,
     name      => "${name}_${service}",
     enable    => $service_enable,
-    require   => [ File["${name}_${service}_init"], File["${config}"], File["${name}_${conf_logrotate}_logrotate"] ],
-    subscribe => File["${config}"],
+    require   => [ File["${name}_${service}_init"], Concat["${config}"], File["${name}_${conf_logrotate}_logrotate"] ],
+    subscribe => Concat["${config}"],
   }
 
 }
