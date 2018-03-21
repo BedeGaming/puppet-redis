@@ -51,6 +51,7 @@ class redis::params {
   $sentinel_quorum                   = '1'
   $sentinel_parallel_syncs           = undef
   $sentinel_failover_timeout         = undef
+  $sentinel_protected_mode           = undef
 
 
 }
