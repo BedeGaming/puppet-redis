@@ -12,6 +12,7 @@ define redis::sentinel::instance (
   $pidfile_path            = $redis::params::sentinel_pidfile_path,
   $logfile                 = $redis::params::sentinel_logfile,
   $logfile_path            = $redis::params::sentinel_logfile_path,
+  $protected_mode          = $redis::params::sentinel_protected_mode,
 
   $master                  = $name,
   $use_default_master      = false,
