@@ -7,6 +7,7 @@ class redis (
   $sentinel_instances               = {},
   $sentinel_masters                 = {},
   $package                          = $redis::params::package,
+  $package_ensure                   = $redis::params::server_package_ensure,
 
   $server_package                   = $redis::params::server_package,
   $server_service                   = $redis::params::server_service,
