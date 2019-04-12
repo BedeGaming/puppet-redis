@@ -22,6 +22,7 @@ start() {
     [ -f $REDIS_CONFIG ] || exit 6
     [ -x $exec ] || exit 5
     echo -n $"Starting $name: "
+    sleep 3m
     daemon --user ${REDIS_USER-redis} "$exec $REDIS_CONFIG --daemonize yes --pidfile $pidfile"
     retval=$?
     echo
