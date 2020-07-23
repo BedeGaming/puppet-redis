@@ -168,10 +168,10 @@ define redis::server::instance (
     owner   => root,
     group   => root,
     mode    => '0755',
-    notify  => Exec['systemd_reload_instance'],
+    notify  => Exec["${name}_systemd_reload"],
   }
 
-  exec { 'systemd_reload_instance':
+  exec { "${name}_systemd_reload":
     path        => ['/bin','/sbin'],
     command     => 'systemctl daemon-reload',
     refreshonly => true,
