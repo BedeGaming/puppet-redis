@@ -10,7 +10,7 @@
 
 name="<%= @name %>-redis-server"
 exec="/usr/bin/redis-server"
-shut="/usr/bin/redis-shutdown"
+shut="/usr/libexec/redis-shutdown"
 pidfile="<%= @pidfile_path %>/<%= @name %>_<%= @pidfile %>"
 REDIS_CONFIG="<%= @conf_path %>/<%= @name %>_<%= @conf %>"
 
@@ -32,7 +32,7 @@ start() {
 
 stop() {
     echo -n $"Stopping $name: "
-    [ -x $shut ] && $shut <%= @name %>
+    [ -x $shut ] && $shut <%= @name %> || exit 5
     retval=$?
     if [ -f $pidfile ]
     then
