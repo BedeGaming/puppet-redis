@@ -52,6 +52,8 @@ class redis::params {
   $sentinel_parallel_syncs           = undef
   $sentinel_failover_timeout         = undef
   $sentinel_protected_mode           = undef
+  $sentinel_announce_ip              = undef
+  $sentinel_announce_port            = '26379'
 
 
 }

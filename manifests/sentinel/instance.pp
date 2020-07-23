@@ -17,12 +17,12 @@ define redis::sentinel::instance (
   $master                  = $name,
   $use_default_master      = false,
 
-  $user                    = 'redis',
-  $group                   = 'redis',
-  $accounce_ip             = undef,
-  $announce_port           = undef,
-  $working_dir             = '/tmp',
-  $port                    = '26379',
+  $user                    = $redis::params::sentinel_user,
+  $group                   = $redis::params::sentinel_group,
+  $accounce_ip             = $redis::params::sentinel_announce_ip,
+  $announce_port           = $redis::params::sentinel_announce_port,
+  $working_dir             = $redis::params::sentinel_working_dir,
+  $port                    = $redis::params::sentinel_port,
 
 ) {
 
@@ -33,6 +33,14 @@ define redis::sentinel::instance (
     group  => $group,
     mode   => '0644',
     #    notify => Class['::redis::sentinel::service'],
+  }
+
+  if $announce_ip == undef {
+    $announce_ip => $::ipaddress,
+  }
+
+  if $announce_port == undef {
+    $announce_port => '26379',
   }
 
   if $use_default_master {

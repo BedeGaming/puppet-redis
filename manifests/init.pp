@@ -39,6 +39,8 @@ class redis (
   $sentinel_parallel_syncs          = $redis::params::sentinel_parallel_syncs,
   $sentinel_failover_timeout        = $redis::params::sentinel_failover_timeout,
   $sentinel_protected_mode          = $redis::params::sentinel_protected_mode,
+  $sentinel_announce_ip             = $redis::params::sentinel_announce_ip,
+  $sentinel_announce_port           = $redis::params::sentinel_announce_port,
 
 ) inherits redis::params {
 
