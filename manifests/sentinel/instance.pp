@@ -35,14 +35,6 @@ define redis::sentinel::instance (
     #    notify => Class['::redis::sentinel::service'],
   }
 
-  if $announce_ip == undef {
-    $announce_ip => $::ipaddress,
-  }
-
-  if $announce_port == undef {
-    $announce_port => '26379',
-  }
-
   if $use_default_master {
     ::redis::sentinel::master { "${name}-default":
       master      => $name,
