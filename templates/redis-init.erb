@@ -67,19 +67,19 @@ rh_status_q() {
 
 case "$1" in
     start)
-        rh_status_q && exit 0
         $1
+        rh_status_q && exit 0
         ;;
     stop)
-        rh_status_q || exit 0
         $1
+        rh_status_q || exit 0
         ;;
     restart)
         $1
         ;;
     reload)
-        rh_status_q || exit 7
         $1
+        rh_status_q || exit 7
         ;;
     force-reload)
         force_reload
@@ -88,8 +88,8 @@ case "$1" in
         rh_status
         ;;
     condrestart|try-restart)
-        rh_status_q || exit 0
         restart
+        rh_status_q || exit 0
         ;;
     *)
         echo $"Usage: $0 {start|stop|status|restart|condrestart|try-restart}"
