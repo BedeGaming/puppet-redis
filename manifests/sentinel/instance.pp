@@ -4,6 +4,7 @@ define redis::sentinel::instance (
   $service_enable          = $redis::params::sentinel_enable,
   $service                 = $redis::params::sentinel_service,
   $service_path            = $redis::params::sentinel_service_path,
+  $unit_path               = $redis::params::sentinel_unit_path,
   $conf                    = $redis::params::sentinel_conf,
   $conf_path               = $redis::params::sentinel_conf_path,
   $conf_logrotate          = $redis::params::sentinel_conf_logrotate,
@@ -71,7 +72,13 @@ define redis::sentinel::instance (
 
   file { "${name}_${service}_init":
     path    => "${service_path}/${name}_${service}",
-    content => template('redis/redis-sentinel-init.erb'),
+    ensure  => absent,
+    notify  => Exec["${name}_systemd_reload"],
+  }
+
+  file { "${name}_${service}_unit":
+    path    => "${unit_path}/${name}_${service}.service",
+    content => template('redis/redis-sentinel-unit.erb'),
     owner   => root,
     group   => root,
     mode    => '0755',
@@ -82,6 +89,7 @@ define redis::sentinel::instance (
     path        => ['/bin','/sbin'],
     command     => 'systemctl daemon-reload',
     refreshonly => true,
+    notify      => Service["${name}_${service}"],
   }
 
   service { "${name}_${service}":

@@ -8,6 +8,8 @@ class redis (
   $sentinel_masters                 = {},
   $package                          = $redis::params::package,
 
+  $server_user                      = $redis::params::server_user,
+  $server_group                     = $redis::params::server_group,
   $server_package                   = $redis::params::server_package,
   $server_service                   = $redis::params::server_service,
   $server_conf                      = $redis::params::server_conf,
@@ -21,6 +23,7 @@ class redis (
   $server_service_manage            = $redis::params::server_service_manage,
 
   $sentinel_user                    = $redis::params::sentinel_user,
+  $sentinel_group                   = $redis::params::sentinel_group,
   $sentinel_conf                    = $redis::params::sentinel_conf,
   $sentinel_conf_logrotate          = $redis::params::sentinel_conf_logrotate,
   $sentinel_pidfile                 = $redis::params::sentinel_pidfile,
