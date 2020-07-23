@@ -5,7 +5,7 @@ define redis::sentinel::master (
 
   $master                  = $name,
   $master_name             = $name,
-  $master_ip               = $redis::params::sentinel_master_ip,
+  $master_ip               = $::ipaddress,
   $master_port             = $redis::params::sentinel_master_port,
   $auth_pass               = $redis::params::sentinel_auth_pass,
   $down_after_milliseconds = $redis::params::sentinel_down_after_milliseconds,
