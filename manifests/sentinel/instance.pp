@@ -19,7 +19,7 @@ define redis::sentinel::instance (
 
   $user                    = $redis::params::sentinel_user,
   $group                   = $redis::params::sentinel_group,
-  $accounce_ip             = $::ipaddress,
+  $announce_ip             = $redis::params::sentinel_announce_ip,
   $announce_port           = $redis::params::sentinel_announce_port,
   $working_dir             = $redis::params::sentinel_working_dir,
   $port                    = $redis::params::sentinel_port,
