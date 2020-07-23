@@ -31,7 +31,7 @@ start() {
 
 stop() {
     echo -n $"Stopping $name: "
-    [ -x $shut ] && $shut
+    [ -x $shut ] && $shut <%= @name %>-redis-sentinel
     retval=$?
     if [ -f $pidfile ]
     then

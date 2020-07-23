@@ -32,7 +32,7 @@ start() {
 
 stop() {
     echo -n $"Stopping $name: "
-    [ -x $shut ] && $shut
+    [ -x $shut ] && $shut <%= @name %>
     retval=$?
     if [ -f $pidfile ]
     then
