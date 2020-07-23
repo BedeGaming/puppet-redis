@@ -63,6 +63,10 @@ sentinel announce-ip <%= @announce_ip %>
 sentinel announce-port <%= @announce_port %>
 <%- end -%>
 
+<%- if @myid -%>
+sentinel myid <%= @myid %>
+<%- end -%>
+
 # dir <working-directory>
 # Every long running process should have a well-defined working directory.
 # For Redis Sentinel to chdir to /tmp at startup is the simplest thing

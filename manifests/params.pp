@@ -56,6 +56,7 @@ class redis::params {
   $sentinel_announce_port            = '26379'
   $sentinel_priority                 = '500'
   $sentinel_master_instance          = undef
+  $sentinel_myid                     = $::hostname
 
 
 }
