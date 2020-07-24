@@ -62,5 +62,8 @@ class redis::params {
   $sentinel_master_instance          = undef
   $sentinel_myid_raw                 = $::hostname
 
+  # Redis Server Parameters
+  $server_replica_announce_ip        = $::ipaddress
+  $server_replica_announce_port      = undef
 
 }

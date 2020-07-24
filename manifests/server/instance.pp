@@ -18,6 +18,9 @@ define redis::server::instance (
   $logfile                           = $redis::params::server_logfile,
   $logfile_path                      = $redis::params::server_logfile_path,
 
+  $replica_announce_ip               = $redis::params::server_replica_announce_ip,
+  $replica_announce_port             = $redis::params::server_replica_announce_port,
+
   $daemonize                         = 'yes',
   $port                              = '6379',
   $tcp_backlog                       = '511',

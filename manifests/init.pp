@@ -21,6 +21,8 @@ class redis (
   $server_package_ensure            = $redis::params::server_package_ensure,
   $server_service_ensure            = $redis::params::server_service_ensure,
   $server_service_manage            = $redis::params::server_service_manage,
+  $server_replica_announce_ip       = $redis::params::server_replica_announce_ip,
+  $server_replica_announce_port     = $redis::params::server_replica_announce_port,
 
   $sentinel_user                    = $redis::params::sentinel_user,
   $sentinel_group                   = $redis::params::sentinel_group,
