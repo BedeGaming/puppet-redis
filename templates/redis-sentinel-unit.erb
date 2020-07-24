@@ -1,13 +1,13 @@
 [Unit]
-Description=Redis Sentinel (<%= @name %>-redis-sentinel)
+Description=Redis Sentinel (<%= @name %>_redis-sentinel)
 After=network.target
 
 [Service]
 ExecStart=/usr/bin/redis-sentinel <%= @conf_path %>/<%= @name %>_<%= @conf %> --daemonize no --supervised systemd
-ExecStop=/usr/libexec/redis-shutdown <%= @name %>-redis-sentinel
+ExecStop=/usr/libexec/redis-shutdown <%= @name %>_redis-sentinel
 Type=notify
-user=<%= @user %>
-group=<%= @group %>
+User=<%= @user %>
+Group=<%= @group %>
 RuntimeDirectory=redis
 RuntimeDirectoryMode=0755
 
