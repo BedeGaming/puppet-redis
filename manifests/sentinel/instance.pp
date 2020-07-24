@@ -25,7 +25,7 @@ define redis::sentinel::instance (
   $working_dir             = $redis::params::sentinel_working_dir,
   $port                    = $redis::params::sentinel_port,
 
-  $myid                    = $redis::params::sentinel_myid,
+  $myid                    = sha256($redis::params::sentinel_myid_raw),
 
 ) {
 
