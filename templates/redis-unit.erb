@@ -4,7 +4,7 @@ After=network.target
 
 [Service]
 ExecStart=/usr/bin/redis-server <%= @conf_path %>/<%= @name %>_<%= @conf %> --daemonize no --supervised systemd
-ExecStop=/usr/libexec/redis-shutdown <%= @name %>
+ExecStop=/usr/libexec/redis-shutdown <%= @name %>_redis
 Type=notify
 User=<%= @user %>
 Group=<%= @group %>

@@ -81,7 +81,7 @@ define redis::sentinel::instance (
     content => template('redis/redis-sentinel-unit.erb'),
     owner   => root,
     group   => root,
-    mode    => '0755',
+    mode    => '0644',
     notify  => Exec["${name}_systemd_reload"],
   }
 
