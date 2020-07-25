@@ -86,6 +86,8 @@ define redis::server::instance (
 
 ) {
 
+  if ($::hostname in $slaveof) { $slaveof = undef } # Should set first instance to master
+
   validate_absolute_path($conf_path)
   validate_absolute_path($conf_logrotate_path)
   validate_absolute_path($pidfile_path)
@@ -156,8 +158,8 @@ define redis::server::instance (
   file { "${name}_${conf}":
     path    => "${conf_path}/${name}_${conf}",
     content => template('redis/redis.conf.erb'),
-    owner   => root,
-    group   => root,
+    owner   => $user,
+    group   => $group,
     mode    => '0644',
   }
 
