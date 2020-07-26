@@ -155,12 +155,38 @@ define redis::server::instance (
   if (!is_integer($hz)) { fail('$hz must be an integer') }
   validate_re($aof_rewrite_incremental_fsync, [ 'yes', 'no' ] )
 
+  exec { "${name}_dummy_refresh":
+    command     => '/bin/true',
+    refreshonly => true,
+  }
+
+  file { "${name}_redis_config_directory":
+    path    => "${conf_path}/redis.d",
+    ensure  => directory,
+    recurse => true,
+    purge   => true,
+    owner   => root,
+    group   => root,
+    mode    => '0755',
+  }
+
   file { "${name}_${conf}":
-    path     => "${conf_path}/${name}_${conf}",
-    content  => template('redis/redis.conf.erb'),
-    owner    => root,
-    group    => root,
-    mode     => '0644',
+    path    => "${conf_path}/redis.d/${name}_${conf}",
+    content => template('redis/redis.d.conf.erb'),
+    owner   => root,
+    group   => root,
+    mode    => '0644',
+    require => File["${name}_redis_config_directory"],
+    notify  => Exec["${name}_dummy_refresh"],
+  }
+
+  file { "${name}_${conf}":
+    path    => "${conf_path}/${name}_${conf}",
+    content => template('redis/redis.conf.erb'),
+    owner   => ${user},
+    group   => ${group},
+    mode    => '0644',
+    require => Exec["${name}_dummy_refresh"],
   }
 
   file { "${name}_${conf_logrotate}_logrotate":
