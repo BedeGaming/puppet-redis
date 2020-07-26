@@ -183,8 +183,8 @@ define redis::server::instance (
   file { "${name}_${conf}":
     path    => "${conf_path}/${name}_${conf}",
     content => template('redis/redis.conf.erb'),
-    owner   => ${user},
-    group   => ${group},
+    owner   => $user,
+    group   => $group,
     mode    => '0644',
     require => Exec["${name}_dummy_refresh"],
   }
