@@ -86,6 +86,8 @@ define redis::server::instance (
 
 ) {
 
+  if ($::hostname in $slaveof) { $isslave = undef } else { $isslave = true } # Should set first instance to master
+
   validate_absolute_path($conf_path)
   validate_absolute_path($conf_logrotate_path)
   validate_absolute_path($pidfile_path)
@@ -153,9 +155,23 @@ define redis::server::instance (
   if (!is_integer($hz)) { fail('$hz must be an integer') }
   validate_re($aof_rewrite_incremental_fsync, [ 'yes', 'no' ] )
 
+  exec { "check_${name}_${conf}":
+    command => "/usr/bin/true",
+    unless  => "grep -q 'PuppetIncludes' ${conf_path}/${name}_${conf}",
+  }
+
   file { "${name}_${conf}":
-    path    => "${conf_path}/${name}_${conf}",
-    content => template('redis/redis.conf.erb'),
+    path     => "${conf_path}/${name}_${conf}",
+    content  => template('redis/redis.conf.erb'),
+    owner    => $user,
+    group    => $group,
+    mode     => '0644',
+    requires =>  Exec["check_${name}_${conf}"],
+  }
+
+  file { "puppet-${name}_${conf}":
+    path    => "${conf_path}/puppet-${name}_${conf}",
+    content => template('redis/puppet-redis.conf.erb'),
     owner   => $user,
     group   => $group,
     mode    => '0644',
