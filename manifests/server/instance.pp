@@ -157,7 +157,7 @@ define redis::server::instance (
 
   exec { "check_${name}_${conf}":
     command => "/usr/bin/true",
-    unless  => "grep -q 'PuppetIncludes' ${conf_path}/${name}_${conf}",
+    unless  => "/usr/bin/grep -q 'PuppetIncludes' ${conf_path}/${name}_${conf}",
   }
 
   file { "${name}_${conf}":
