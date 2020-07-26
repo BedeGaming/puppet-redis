@@ -166,7 +166,7 @@ define redis::server::instance (
     owner    => $user,
     group    => $group,
     mode     => '0644',
-    requires =>  Exec["check_${name}_${conf}"],
+    require  =>  Exec["check_${name}_${conf}"],
   }
 
   file { "puppet-${name}_${conf}":
@@ -211,7 +211,7 @@ define redis::server::instance (
     ensure    => $service_ensure,
     name      => "${name}_${service}",
     enable    => $service_enable,
-    require   => [ File["${name}_${service}_init"], File["${name}_${conf}"], File["${name}_${conf_logrotate}_logrotate"] ],
+    require   => [ File["${name}_${service}_init"], File["${name}_${conf}"], File["puppet-${name}_${conf}"], File["${name}_${conf_logrotate}_logrotate"] ],
     subscribe => File["${name}_${conf}"],
   }
 
