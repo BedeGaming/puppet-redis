@@ -155,26 +155,12 @@ define redis::server::instance (
   if (!is_integer($hz)) { fail('$hz must be an integer') }
   validate_re($aof_rewrite_incremental_fsync, [ 'yes', 'no' ] )
 
-  exec { "check_${name}_${conf}":
-    command => "/usr/bin/true",
-    unless  => "/usr/bin/grep -q 'PuppetIncludes' ${conf_path}/${name}_${conf}",
-  }
-
   file { "${name}_${conf}":
     path     => "${conf_path}/${name}_${conf}",
     content  => template('redis/redis.conf.erb'),
-    owner    => $user,
-    group    => $group,
+    owner    => root,
+    group    => root,
     mode     => '0644',
-    require  =>  Exec["check_${name}_${conf}"],
-  }
-
-  file { "puppet-${name}_${conf}":
-    path    => "${conf_path}/puppet-${name}_${conf}",
-    content => template('redis/puppet-redis.conf.erb'),
-    owner   => $user,
-    group   => $group,
-    mode    => '0644',
   }
 
   file { "${name}_${conf_logrotate}_logrotate":
@@ -211,7 +197,7 @@ define redis::server::instance (
     ensure    => $service_ensure,
     name      => "${name}_${service}",
     enable    => $service_enable,
-    require   => [ File["${name}_${service}_init"], File["${name}_${conf}"], File["puppet-${name}_${conf}"], File["${name}_${conf_logrotate}_logrotate"] ],
+    require   => [ File["${name}_${service}_init"], File["${name}_${conf}"], File["${name}_${conf_logrotate}_logrotate"] ],
     subscribe => File["${name}_${conf}"],
   }
 
