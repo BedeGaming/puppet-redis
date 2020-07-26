@@ -170,7 +170,7 @@ define redis::server::instance (
     mode    => '0755',
   }
 
-  file { "${name}_${conf}":
+  file { "redis.d_${name}_${conf}":
     path    => "${conf_path}/redis.d/${name}_${conf}",
     content => template('redis/redis.d.conf.erb'),
     owner   => root,
