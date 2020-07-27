@@ -155,8 +155,8 @@ define redis::server::instance (
   if (!is_integer($hz)) { fail('$hz must be an integer') }
   validate_re($aof_rewrite_incremental_fsync, [ 'yes', 'no' ] )
 
-  exec { "${name}_dummy_refresh":
-    command     => '/bin/true',
+  exec { "${name}_refresh":
+    command     => "/usr/bin/printf '# FILE BODGED BY PUPPET\\n# Redis dynamic config for %s\\n\\ninclude %s\\n\\n' '${name}' '${conf_path}/redis.d/${name}_${conf}' > ${conf_path}/${name}_${conf} && /usr/bin/chown ${user}:${group} ${conf_path}/${name}_${conf}",
     refreshonly => true,
   }
 
@@ -166,16 +166,7 @@ define redis::server::instance (
     owner   => root,
     group   => root,
     mode    => '0644',
-    notify  => Exec["${name}_dummy_refresh"],
-  }
-
-  file { "${name}_${conf}":
-    path    => "${conf_path}/${name}_${conf}",
-    content => template('redis/redis.conf.erb'),
-    owner   => $user,
-    group   => $group,
-    mode    => '0644',
-    require => Exec["${name}_dummy_refresh"],
+    notify  => Exec["${name}_refresh"],
   }
 
   file { "${name}_${conf_logrotate}_logrotate":
