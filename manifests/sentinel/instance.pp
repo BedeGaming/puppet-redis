@@ -29,12 +29,18 @@ define redis::sentinel::instance (
 
 ) {
 
-  $config = "${conf_path}/${name}_${conf}"
+    exec { "${name}-sentinel_refresh":
+    command     => "/usr/bin/printf '# FILE BODGED BY PUPPET\\n# Redis Sentinel dynamic config for %s\\n\\ninclude %s\\n\\n' '${name}' '${conf_path}/redis.d/${name}_${conf}' > ${conf_path}/${name}_${conf} && /usr/bin/chown ${user}:${group} ${conf_path}/${name}_${conf}",
+    refreshonly => true,
+  }
+
+  $config = "${conf_path}/redis.d/${name}_${conf}"
 
   concat { $config:
-    owner  => $user,
-    group  => $group,
+    owner  => root,
+    group  => root,
     mode   => '0644',
+    notify => Exec["${name}-sentinel_refresh"],
     #    notify => Class['::redis::sentinel::service'],
   }
 
