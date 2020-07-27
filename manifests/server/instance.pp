@@ -204,7 +204,7 @@ define redis::server::instance (
     name      => "${name}_${service}",
     enable    => $service_enable,
     require   => [ File["${name}_${service}_init"], File["redis.d_${name}_${conf}"], File["${name}_${conf_logrotate}_logrotate"] ],
-    subscribe => File["redis.d_${name}_${conf}"],
+    subscribe => Exec["${name}_refresh"],
   }
 
 }

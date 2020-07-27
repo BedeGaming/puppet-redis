@@ -103,7 +103,7 @@ define redis::sentinel::instance (
     name      => "${name}_${service}",
     enable    => $service_enable,
     require   => [ File["${name}_${service}_init"], Concat["${config}"], File["${name}_${conf_logrotate}_logrotate"] ],
-    subscribe => Concat["${config}"],
+    subscribe => Exec["${name}-sentinel_refresh"],
   }
 
 }
