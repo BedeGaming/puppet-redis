@@ -51,6 +51,16 @@ class redis (
 
   contain '::redis::install'
 
+  file { "redis_config_directory":
+    path    => "${server_conf_path}/redis.d",
+    ensure  => directory,
+    recurse => true,
+    purge   => true,
+    owner   => root,
+    group   => root,
+    mode    => '0755',
+  }
+
   if $server_enable {
     create_resources('redis::server::instance',$server_instances)
   }

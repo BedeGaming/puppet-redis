@@ -160,23 +160,12 @@ define redis::server::instance (
     refreshonly => true,
   }
 
-  file { "${name}_redis_config_directory":
-    path    => "${conf_path}/redis.d",
-    ensure  => directory,
-    recurse => true,
-    purge   => true,
-    owner   => root,
-    group   => root,
-    mode    => '0755',
-  }
-
   file { "redis.d_${name}_${conf}":
     path    => "${conf_path}/redis.d/${name}_${conf}",
     content => template('redis/redis.d.conf.erb'),
     owner   => root,
     group   => root,
     mode    => '0644',
-    require => File["${name}_redis_config_directory"],
     notify  => Exec["${name}_dummy_refresh"],
   }
 
