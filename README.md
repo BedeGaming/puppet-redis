@@ -12,7 +12,7 @@ Puppet module to manage [Redis](http://redis.io/) and [Redis Sentinel](http://re
 
 ## Requirements
 ### Redis Versions
-Developed against Redis version 5.0.5.  Probably supports all 6.x.y, but older versions may not work.
+Developed against Redis version 4.0.2.  Probably supports all 6.x.y, but older versions may not work.
 
 ### Operating System
 Developed against CentOS 7, so should support most RH 8.x distributions.
