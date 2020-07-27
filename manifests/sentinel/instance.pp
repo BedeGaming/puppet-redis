@@ -29,8 +29,8 @@ define redis::sentinel::instance (
 
 ) {
 
-    exec { "${name}-sentinel_refresh":
-    command     => "/usr/bin/printf '# FILE BODGED BY PUPPET\\n# Redis Sentinel dynamic config for %s\\n\\ninclude %s\\n\\n' '${name}' '${conf_path}/redis.d/${name}_${conf}' > ${conf_path}/${name}_${conf} && /usr/bin/chown ${user}:${group} ${conf_path}/${name}_${conf}",
+  exec { "${name}-sentinel_refresh":
+    command     => "/usr/bin/cp ${conf_path}/redis.d/${name}_${conf} ${conf_path}/${name}_${conf} && /usr/bin/chown ${user}:${group} ${conf_path}/${name}_${conf}",
     refreshonly => true,
   }
 
