@@ -22,7 +22,7 @@ define redis::sentinel::master (
     fail('Cannot create a master without a sentinel instance')
   }
 
-  $config = "${conf_path}/${instance}_${conf}"
+  $config = "${conf_path}/redis.d/${instance}_${conf}"
 
   $tmpFile=md5("${master}-${priority}-master")
 
