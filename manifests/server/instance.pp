@@ -156,7 +156,7 @@ define redis::server::instance (
   validate_re($aof_rewrite_incremental_fsync, [ 'yes', 'no' ] )
 
   exec { "${name}_refresh":
-    command     => "/usr/bin/printf '# FILE BODGED BY PUPPET\\n# Redis dynamic config for %s\\n\\ninclude %s\\n\\n' '${name}' '${conf_path}/redis.d/${name}_${conf}' > ${conf_path}/${name}_${conf} && /usr/bin/chown ${user}:${group} ${conf_path}/${name}_${conf}",
+    command     => "/usr/bin/cp ${conf_path}/redis.d/${name}_${conf} ${conf_path}/${name}_${conf} && /usr/bin/chown ${user}:${group} ${conf_path}/${name}_${conf}",
     refreshonly => true,
   }
 
