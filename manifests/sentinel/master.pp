@@ -5,16 +5,16 @@ define redis::sentinel::master (
 
   $master                  = $name,
   $master_name             = $name,
-  $master_ip               = $::ipaddress,
-  $master_port             = '6379',
-  $auth_pass               = undef,
-  $down_after_milliseconds = '30000',
-  $quorum                  = '1',
-  $parallel_syncs          = undef,
-  $failover_timeout        = undef,
-  $priority                = 500,
+  $master_ip               = $redis::params::sentinel_master_ip,
+  $master_port             = $redis::params::sentinel_master_port,
+  $auth_pass               = $redis::params::sentinel_auth_pass,
+  $down_after_milliseconds = $redis::params::sentinel_down_after_milliseconds,
+  $quorum                  = $redis::params::sentinel_quorum,
+  $parallel_syncs          = $redis::params::sentinel_parallel_syncs,
+  $failover_timeout        = $redis::params::sentinel_failover_timeout,
+  $priority                = $redis::params::sentinel_priority,
 
-  $instance                = undef,
+  $instance                = $redis::params::sentinel_master_instance,
 
 ) {
 
@@ -22,7 +22,7 @@ define redis::sentinel::master (
     fail('Cannot create a master without a sentinel instance')
   }
 
-  $config = "${conf_path}/${instance}_${conf}"
+  $config = "${conf_path}/redis.d/${instance}_${conf}"
 
   $tmpFile=md5("${master}-${priority}-master")
 

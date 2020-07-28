@@ -56,11 +56,15 @@ port <%= @port %>
 # Example:
 #
 # sentinel announce-ip 1.2.3.4
-<%- if @accounce_ip -%>
+<%- if @announce_ip -%>
 sentinel announce-ip <%= @announce_ip %>
 <%- end -%>
 <%- if @announce_port -%>
 sentinel announce-port <%= @announce_port %>
+<%- end -%>
+
+<%- if @myid -%>
+sentinel myid <%= @myid %>
 <%- end -%>
 
 # dir <working-directory>

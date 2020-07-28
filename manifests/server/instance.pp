@@ -4,6 +4,10 @@ define redis::server::instance (
   $service_enable                    = $redis::params::server_enable,
   $service                           = $redis::params::server_service,
   $service_path                      = $redis::params::server_service_path,
+  $unit_path                         = $redis::params::server_unit_path,
+
+  $user                              = $redis::params::server_user,
+  $group                             = $redis::params::server_group,
 
   $conf                              = $redis::params::server_conf,
   $conf_path                         = $redis::params::server_conf_path,
@@ -13,6 +17,9 @@ define redis::server::instance (
   $pidfile_path                      = $redis::params::server_pidfile_path,
   $logfile                           = $redis::params::server_logfile,
   $logfile_path                      = $redis::params::server_logfile_path,
+
+  $replica_announce_ip               = $redis::params::server_replica_announce_ip,
+  $replica_announce_port             = $redis::params::server_replica_announce_port,
 
   $daemonize                         = 'yes',
   $port                              = '6379',
@@ -78,6 +85,8 @@ define redis::server::instance (
   $aof_rewrite_incremental_fsync     = 'yes',
 
 ) {
+
+  if ($::hostname in $slaveof) { $isslave = undef } else { $isslave = true } # Should set first instance to master
 
   validate_absolute_path($conf_path)
   validate_absolute_path($conf_logrotate_path)
@@ -146,12 +155,18 @@ define redis::server::instance (
   if (!is_integer($hz)) { fail('$hz must be an integer') }
   validate_re($aof_rewrite_incremental_fsync, [ 'yes', 'no' ] )
 
-  file { "${name}_${conf}":
-    path    => "${conf_path}/${name}_${conf}",
-    content => template('redis/redis.conf.erb'),
+  exec { "${name}_refresh":
+    command     => "/usr/bin/cp ${conf_path}/redis.d/${name}_${conf} ${conf_path}/${name}_${conf} && /usr/bin/chown ${user}:${group} ${conf_path}/${name}_${conf}",
+    refreshonly => true,
+  }
+
+  file { "redis.d_${name}_${conf}":
+    path    => "${conf_path}/redis.d/${name}_${conf}",
+    content => template('redis/redis.d.conf.erb'),
     owner   => root,
     group   => root,
     mode    => '0644',
+    notify  => Exec["${name}_refresh"],
   }
 
   file { "${name}_${conf_logrotate}_logrotate":
@@ -164,18 +179,32 @@ define redis::server::instance (
 
   file { "${name}_${service}_init":
     path    => "${service_path}/${name}_${service}",
-    content => template('redis/redis-init.erb'),
+    ensure  => absent,
+    notify  => Exec["${name}_systemd_reload"],
+  }
+
+  file { "${name}_${service}_unit":
+    path    => "${unit_path}/${name}_${service}.service",
+    content => template('redis/redis-unit.erb'),
     owner   => root,
     group   => root,
-    mode    => '0755',
+    mode    => '0644',
+    notify  => Exec["${name}_systemd_reload"],
+  }
+
+  exec { "${name}_systemd_reload":
+    path        => ['/bin','/sbin'],
+    command     => 'systemctl daemon-reload',
+    refreshonly => true,
+    notify      => Service["${name}_${service}"],
   }
 
   service { "${name}_${service}":
     ensure    => $service_ensure,
     name      => "${name}_${service}",
     enable    => $service_enable,
-    require   => [ File["${name}_${service}_init"], File["${name}_${conf}"], File["${name}_${conf_logrotate}_logrotate"] ],
-    subscribe => File["${name}_${conf}"],
+    require   => [ File["${name}_${service}_init"], File["redis.d_${name}_${conf}"], File["${name}_${conf_logrotate}_logrotate"] ],
+    subscribe => Exec["${name}_refresh"],
   }
 
 }

@@ -5,16 +5,17 @@ Puppet module to manage [Redis](http://redis.io/) and [Redis Sentinel](http://re
 
 ##Author
 * Rob Rankin <github@undertow.ca>
+* Robert Hawdon <git@robertianhawdon.me.uk>
 
 ## To Do
 * Tests
 
 ## Requirements
 ### Redis Versions
-Developed against Redis version 2.8.17.  Probably supports all 2.8.x, but older versions may not work.
+Developed against Redis version 4.0.2.  Probably supports all 6.x.y, but older versions may not work.
 
 ### Operating System
-Developed against CentOS 6.5, so should support most RH 6.x distributions.
+Developed against CentOS 7, so should support most RH 8.x distributions.
 
 ### Redis Packages
 Developed against the REMI Redis RPM packages, probably the best source for up to date Redis packages for RedHat.

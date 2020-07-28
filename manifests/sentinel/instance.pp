@@ -4,6 +4,7 @@ define redis::sentinel::instance (
   $service_enable          = $redis::params::sentinel_enable,
   $service                 = $redis::params::sentinel_service,
   $service_path            = $redis::params::sentinel_service_path,
+  $unit_path               = $redis::params::sentinel_unit_path,
   $conf                    = $redis::params::sentinel_conf,
   $conf_path               = $redis::params::sentinel_conf_path,
   $conf_logrotate          = $redis::params::sentinel_conf_logrotate,
@@ -17,21 +18,29 @@ define redis::sentinel::instance (
   $master                  = $name,
   $use_default_master      = false,
 
-  $user                    = 'redis',
-  $group                   = 'redis',
-  $accounce_ip             = undef,
-  $announce_port           = undef,
-  $working_dir             = '/tmp',
-  $port                    = '26379',
+  $user                    = $redis::params::sentinel_user,
+  $group                   = $redis::params::sentinel_group,
+  $announce_ip             = $redis::params::sentinel_announce_ip,
+  $announce_port           = $redis::params::sentinel_announce_port,
+  $working_dir             = $redis::params::sentinel_working_dir,
+  $port                    = $redis::params::sentinel_port,
+
+  $myid                    = sha1($redis::params::sentinel_myid_raw),
 
 ) {
 
-  $config = "${conf_path}/${name}_${conf}"
+  exec { "${name}-sentinel_refresh":
+    command     => "/usr/bin/cp ${conf_path}/redis.d/${name}_${conf} ${conf_path}/${name}_${conf} && /usr/bin/chown ${user}:${group} ${conf_path}/${name}_${conf}",
+    refreshonly => true,
+  }
+
+  $config = "${conf_path}/redis.d/${name}_${conf}"
 
   concat { $config:
-    owner  => $user,
-    group  => $group,
+    owner  => root,
+    group  => root,
     mode   => '0644',
+    notify => Exec["${name}-sentinel_refresh"],
     #    notify => Class['::redis::sentinel::service'],
   }
 
@@ -69,10 +78,24 @@ define redis::sentinel::instance (
 
   file { "${name}_${service}_init":
     path    => "${service_path}/${name}_${service}",
-    content => template('redis/redis-sentinel-init.erb'),
+    ensure  => absent,
+    notify  => Exec["${name}_systemd_reload"],
+  }
+
+  file { "${name}_${service}_unit":
+    path    => "${unit_path}/${name}_${service}.service",
+    content => template('redis/redis-sentinel-unit.erb'),
     owner   => root,
     group   => root,
-    mode    => '0755',
+    mode    => '0644',
+    notify  => Exec["${name}_systemd_reload"],
+  }
+
+  exec { "${name}_systemd_reload":
+    path        => ['/bin','/sbin'],
+    command     => 'systemctl daemon-reload',
+    refreshonly => true,
+    notify      => Service["${name}_${service}"],
   }
 
   service { "${name}_${service}":
@@ -80,7 +103,7 @@ define redis::sentinel::instance (
     name      => "${name}_${service}",
     enable    => $service_enable,
     require   => [ File["${name}_${service}_init"], Concat["${config}"], File["${name}_${conf_logrotate}_logrotate"] ],
-    subscribe => Concat["${config}"],
+    subscribe => Exec["${name}-sentinel_refresh"],
   }
 
 }

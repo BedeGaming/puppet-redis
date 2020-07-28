@@ -8,6 +8,8 @@ class redis (
   $sentinel_masters                 = {},
   $package                          = $redis::params::package,
 
+  $server_user                      = $redis::params::server_user,
+  $server_group                     = $redis::params::server_group,
   $server_package                   = $redis::params::server_package,
   $server_service                   = $redis::params::server_service,
   $server_conf                      = $redis::params::server_conf,
@@ -19,8 +21,11 @@ class redis (
   $server_package_ensure            = $redis::params::server_package_ensure,
   $server_service_ensure            = $redis::params::server_service_ensure,
   $server_service_manage            = $redis::params::server_service_manage,
+  $server_replica_announce_ip       = $redis::params::server_replica_announce_ip,
+  $server_replica_announce_port     = $redis::params::server_replica_announce_port,
 
   $sentinel_user                    = $redis::params::sentinel_user,
+  $sentinel_group                   = $redis::params::sentinel_group,
   $sentinel_conf                    = $redis::params::sentinel_conf,
   $sentinel_conf_logrotate          = $redis::params::sentinel_conf_logrotate,
   $sentinel_pidfile                 = $redis::params::sentinel_pidfile,
@@ -39,10 +44,22 @@ class redis (
   $sentinel_parallel_syncs          = $redis::params::sentinel_parallel_syncs,
   $sentinel_failover_timeout        = $redis::params::sentinel_failover_timeout,
   $sentinel_protected_mode          = $redis::params::sentinel_protected_mode,
+  $sentinel_announce_ip             = $redis::params::sentinel_announce_ip,
+  $sentinel_announce_port           = $redis::params::sentinel_announce_port,
 
 ) inherits redis::params {
 
   contain '::redis::install'
+
+  file { "redis_config_directory":
+    path    => "${server_conf_path}/redis.d",
+    ensure  => directory,
+    recurse => true,
+    purge   => true,
+    owner   => root,
+    group   => root,
+    mode    => '0755',
+  }
 
   if $server_enable {
     create_resources('redis::server::instance',$server_instances)
