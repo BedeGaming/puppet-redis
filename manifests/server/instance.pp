@@ -86,7 +86,9 @@ define redis::server::instance (
 
 ) {
 
-  if ($::hostname in $slaveof) { $isslave = undef } else { $isslave = true } # Should set first instance to master
+  if ($slaveof){
+    if ($::hostname in $slaveof) { $isslave = undef } else { $isslave = true } # Should set first instance to master
+  }
 
   validate_absolute_path($conf_path)
   validate_absolute_path($conf_logrotate_path)
