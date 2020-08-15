@@ -1,8 +1,8 @@
 
 # Sentinel configs for instance <%= @master %>
 
-<%- if @master and @master_ip and @master_port and @quorum -%>
-sentinel monitor <%= @master %> <%= @master_ip %> <%= @master_port %> <%= @quorum %>
+<%- if @master and @master_ip1 and @master_port and @quorum -%>
+sentinel monitor <%= @master %> <%= @master_ip1 %> <%= @master_port %> <%= @quorum %>
 <%- end -%>
 
 <%- if @master_name and @auth_pass -%>
