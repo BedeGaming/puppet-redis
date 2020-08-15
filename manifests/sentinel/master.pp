@@ -5,7 +5,7 @@ define redis::sentinel::master (
 
   $master                  = $name,
   $master_name             = $name,
-  $master_ip               = $redis::params::sentinel_master_ip,
+  $master_ip1              = $redis::params::sentinel_master_ip,
   $master_port             = $redis::params::sentinel_master_port,
   $auth_pass               = $redis::params::sentinel_auth_pass,
   $down_after_milliseconds = $redis::params::sentinel_down_after_milliseconds,
@@ -18,7 +18,7 @@ define redis::sentinel::master (
 
 ) {
 
-  if ($::hostname in $master_ip) { $master_ip = $ipaddress } # Workaround for master hosts resolving to localhost
+  if ($::hostname in $master_ip1) { $master_ip = $ipaddress } else { $master_ip = $master_ip1 } # Workaround for master hosts resolving to localhost
 
   if ($instance == undef) {
     fail('Cannot create a master without a sentinel instance')
