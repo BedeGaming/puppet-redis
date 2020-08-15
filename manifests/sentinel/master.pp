@@ -18,6 +18,8 @@ define redis::sentinel::master (
 
 ) {
 
+  if ($::hostname in $master_ip) { $master_ip1 = $::ipaddress } else { $master_ip1 = $master_ip } # Workaround for master hosts resolving to localhost
+
   if ($instance == undef) {
     fail('Cannot create a master without a sentinel instance')
   }
